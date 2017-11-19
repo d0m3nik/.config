@@ -4,6 +4,9 @@
 if has("win32")
   let g:python3_host_prog='D:/Anaconda3/envs/neovim3/python.exe'
   let g:python_host_prog='D:/Anaconda3/envs/neovim/python.exe'
+else
+  let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
+  let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
 endif
 
 
@@ -42,6 +45,7 @@ if dein#load_state('~/.config/nvim')
   call dein#add('zchee/deoplete-jedi', {'on_ft': 'python'})
   call dein#add('hkupty/iron.nvim')
   call dein#add('Shougo/denite.nvim')
+  call dein#add('vim-airline/vim-airline')
   call dein#end()
   if dein#check_install()
     call dein#install()
@@ -113,6 +117,9 @@ let g:deoplete#enable_at_startup=1
 let g:livedown_autorun=1
 if has("win32")
   let g:livedown_browser="chrome"
+endif
+if has("unix")
+  let g:livedown_browser="firefox"
 endif
 
 

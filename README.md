@@ -4,6 +4,25 @@ Steps for setting up neovim on different platforms.
 ### Ubuntu Linux
 Follow install setps given for [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) 
 
+#### Setup python
+
+```shell
+$ sudo apt-get install python3-venv
+$ virtualenv /home/dome/env/neovim3 --python=python3
+$ source /home/dome/envs/neovim3/bin/activate
+$ pip3 install neovim
+$ virtualenv /home/dome/env/neovim --python=python
+$ source /home/dome/envs/neovim/bin/activate
+$ pip install neovim
+```
+#### Setup markdown preview
+```shell
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+Run `npm install -g livedown`
+
+
 ### Windows
 Download [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) binaries and place in PATH.
 
@@ -11,7 +30,7 @@ Clone repo [dotfiles](https://github.com/d0m3nik/dotfiles) and place the directo
 $HOME/AppData/Local/nvim
 
 #### Setup python 
-```
+```shell
 conda create -n neovim python=2.7
 activate neovim
 conda install pip
