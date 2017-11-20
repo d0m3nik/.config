@@ -4,6 +4,9 @@
 if has("win32")
   let g:python3_host_prog='D:/Anaconda3/envs/neovim3/python.exe'
   let g:python_host_prog='D:/Anaconda3/envs/neovim/python.exe'
+elseif has("mac")
+  let g:python3_host_prog=expand('$HOME/anaconda/envs/neovim3/bin/python3')
+  let g:python_host_prog=expand('$HOME/anaconda/envs/neovim/bin/python')
 else
   let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
   let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
@@ -95,9 +98,9 @@ command! Dark :colorscheme molokai
 """----------------------------------------------------------------------------- 
 call denite#custom#var('grep', 'command', ['pt'])
 call denite#custom#var('file_rec', 'command', 
-      \ ['pt', '--follow', '--nocolor', '--nogroup', '-g=', ''])
+      \ ['pt', '--follow', '--hidden', '--nocolor', '--nogroup', '-g=', ''])
 call denite#custom#var('grep', 'default_opts',
-      \ ['--nogroup', '--nocolor', '--smart-case'])
+      \ ['--nogroup', '--hidden', '--nocolor', '--smart-case'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
@@ -117,8 +120,9 @@ let g:deoplete#enable_at_startup=1
 let g:livedown_autorun=1
 if has("win32")
   let g:livedown_browser="chrome"
-endif
-if has("unix")
+elseif has("mac")
+  let g:livedown_browser="safari"
+elseif has("unix")
   let g:livedown_browser="firefox"
 endif
 
