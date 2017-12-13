@@ -5,8 +5,8 @@ if has("win32")
   let g:python3_host_prog='D:/Anaconda3/envs/neovim3/python.exe'
   let g:python_host_prog='D:/Anaconda3/envs/neovim/python.exe'
 elseif has("mac")
-  let g:python3_host_prog=expand('$HOME/anaconda/envs/neovim3/bin/python3')
-  let g:python_host_prog=expand('$HOME/anaconda/envs/neovim/bin/python')
+  let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
+  let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
 else
   let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
   let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
@@ -34,21 +34,24 @@ if dein#load_state('~/.config/nvim')
   call dein#begin(expand('~/.config/nvim'))
   call dein#add(expand("$HOME/.config/nvim/repos/github.com/Shougo/dein.vim"))
   call dein#add('tpope/vim-fugitive')
+  call dein#add('airblade/vim-gitgutter')
   call dein#add('endel/vim-github-colorscheme')
-  call dein#add('tomasr/molokai')
+  call dein#add('joshdick/onedark.vim')
   call dein#add('scrooloose/nerdtree')
   call dein#add('Xuyuanp/nerdtree-git-plugin')
   call dein#add('tpope/vim-surround')
   call dein#add('tomtom/tcomment_vim')
   call dein#add('tpope/vim-markdown', {'on_ft': 'markdown'})
-  "call dein#add('neovim/node-host', {'build': 'npm install'})
-  "call dein#add('vimlab/mdown.vim', {'build': 'npm install'})
   call dein#add('shime/vim-livedown')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-jedi', {'on_ft': 'python'})
-  call dein#add('hkupty/iron.nvim')
   call dein#add('Shougo/denite.nvim')
   call dein#add('vim-airline/vim-airline')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('neomake/neomake')
+  call dein#add('SirVer/ultisnips')
+  call dein#add('honza/vim-snippets')
+  call dein#add('kassio/neoterm')
   call dein#end()
   if dein#check_install()
     call dein#install()
@@ -63,35 +66,48 @@ endif
 filetype plugin indent on
 syntax enable
 colorscheme github
+let g:airline_theme='papercolor'
 set noswapfile
 set tabstop=2 shiftwidth=2 expandtab
 set number
 set numberwidth=2
+set relativenumber
 set clipboard+=unnamedplus
 set undofile
 set undodir="$HOME/.VIM_UNDO_FILES"
+if(has("termguicolors"))
+  set termguicolors
+endif
 " Remember cursor position between vim sessions
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line ("'\"") <= line("$") |
             \   exe "normal! g'\"" |
             \ endif
+autocmd TermOpen * set bufhidden=hide
 
 """----------------------------------------------------------------------------- 
 """ Key mappings 
 """-----------------------------------------------------------------------------
 let mapleader = ','
-nnoremap <silent> <leader>o :Denite file_rec<CR>
-nnoremap <silent> <leader>b :Denite buffer<CR>
-nnoremap <silent> <leader>f :Denite grep<CR>
-nnoremap <silent> <leader>c :Denite command_history<CR>
-tmap <esc> <c-\><c-n><esc><cr>
-
+nnoremap <silent> <leader>o :Denite file_rec<cr>
+nnoremap <silent> <leader>b :Denite buffer<cr>
+nnoremap <silent> <leader>f :Denite grep<cr>
+nnoremap <silent> <leader>c :Denite command_history<cr>
+tmap jk  <c-\><c-n><esc><cr>
+nnoremap <silent> <l :lnext<cr>
+nnoremap <silent> >l :lprevious<cr>
+inoremap jk <esc>
+nnoremap ö <C-]>
+nnoremap Ö <C-o>
+nnoremap <silent> <f10> :TREPLSendFile<cr>
+nnoremap <silent> <f9> :TREPLSendLine<cr>
+vnoremap <silent> <f9> :TREPLSendSelection<cr>
 
 """----------------------------------------------------------------------------- 
 """ Commands 
 """-----------------------------------------------------------------------------
-command! Light :colorscheme github
-command! Dark :colorscheme molokai
+command! Light :colorscheme github | :AirlineTheme papercolor 
+command! Dark :colorscheme onedark | :AirlineTheme onedark
 
 """----------------------------------------------------------------------------- 
 """ Denite 
@@ -128,12 +144,12 @@ endif
 
 
 """----------------------------------------------------------------------------- 
-""" Iron 
+""" Neomake 
 """----------------------------------------------------------------------------- 
-"let g:iron_map_defaults=0
-"augroup ironmapping
-"  autocmd!
-"  autocmd Filetype python nmap <buffer> <localleader>t <Plug>(iron-send-motion)
-"  autocmd Filetype python vmap <buffer> <localleader>t <Plug>(iron-send-motion)
-"  autocmd Filetype python nmap <buffer> <localleader>p <Plug>(iron-repeat-cmd)
-"augroup END
+" Call neomake when writing buffer
+call neomake#configure#automake('w')
+
+"""----------------------------------------------------------------------------- 
+""" Neoterm 
+"""----------------------------------------------------------------------------- 
+let g:neoterm_position='vertical'
