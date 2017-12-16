@@ -4,6 +4,9 @@
 if has("win32")
   let g:python3_host_prog='D:/Anaconda3/envs/neovim3/python.exe'
   let g:python_host_prog='D:/Anaconda3/envs/neovim/python.exe'
+elseif has("mac")
+  let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
+  let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
 else
   let g:python3_host_prog=expand('$HOME/envs/neovim3/bin/python3')
   let g:python_host_prog=expand('$HOME/envs/neovim/bin/python')
@@ -31,24 +34,26 @@ if dein#load_state('~/.config/nvim')
   call dein#begin(expand('~/.config/nvim'))
   call dein#add(expand("$HOME/.config/nvim/repos/github.com/Shougo/dein.vim"))
   call dein#add('tpope/vim-fugitive')
+  call dein#add('airblade/vim-gitgutter')
   call dein#add('endel/vim-github-colorscheme')
-  call dein#add('tomasr/molokai')
+  call dein#add('joshdick/onedark.vim')
   call dein#add('scrooloose/nerdtree')
   call dein#add('Xuyuanp/nerdtree-git-plugin')
   call dein#add('tpope/vim-surround')
   call dein#add('tomtom/tcomment_vim')
   call dein#add('tpope/vim-markdown', {'on_ft': 'markdown'})
-  "call dein#add('neovim/node-host', {'build': 'npm install'})
-  "call dein#add('vimlab/mdown.vim', {'build': 'npm install'})
   call dein#add('shime/vim-livedown')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-jedi', {'on_ft': 'python'})
   call dein#add('hkupty/iron.nvim')
   call dein#add('Shougo/denite.nvim')
   call dein#add('vim-airline/vim-airline')
-  call dein#add('stephpy/vim-yaml')
+  call dein#add('vim-airline/vim-airline-themes')
+  call dein#add('neomake/neomake')
+  call dein#add('SirVer/ultisnips')
+  call dein#add('honza/vim-snippets')
+  call dein#add('kassio/neoterm')
   call dein#add('dccmx/google-style.vim')
-  " call dein#add('tweekmonster/deoplete-clang2')
   call dein#add('machakann/vim-highlightedyank')
   call dein#end()
   if dein#check_install()
@@ -64,6 +69,7 @@ endif
 filetype plugin indent on
 syntax enable
 colorscheme github
+let g:airline_theme='papercolor'
 set noswapfile
 set tabstop=2 shiftwidth=2 expandtab
 set number
@@ -73,11 +79,15 @@ set inccommand=nosplit
 set clipboard+=unnamedplus
 set undofile
 set undodir="$HOME/.VIM_UNDO_FILES"
+if(has("termguicolors"))
+  set termguicolors
+endif
 " Remember cursor position between vim sessions
 autocmd BufReadPost *
             \ if line("'\"") > 0 && line ("'\"") <= line("$") |
             \   exe "normal! g'\"" |
             \ endif
+autocmd TermOpen * set bufhidden=hide
 
 """----------------------------------------------------------------------------- 
 """ Key mappings 
@@ -87,25 +97,31 @@ nnoremap <silent> <leader>o :Denite file_rec<cr>
 nnoremap <silent> <leader>b :Denite buffer<cr>
 nnoremap <silent> <leader>f :Denite grep<cr>
 nnoremap <silent> <leader>c :Denite command_history<cr>
-nnoremap <silent> <leader>r :Denite register<cr>
-tmap <esc> <c-\><c-n><esc><cr>
+tmap jk  <c-\><c-n><esc><cr>
+nnoremap <silent> <l :lnext<cr>
+nnoremap <silent> >l :lprevious<cr>
+inoremap jk <esc>
+nnoremap ö <C-]>
+nnoremap Ö <C-o>
 nnoremap Y y$
-inoremap jk <esc>  
+nnoremap <silent> <f10> :TREPLSendFile<cr>
+nnoremap <silent> <f9> :TREPLSendLine<cr>
+vnoremap <silent> <f9> :TREPLSendSelection<cr>
 
 """----------------------------------------------------------------------------- 
 """ Commands 
 """-----------------------------------------------------------------------------
-command! Light :colorscheme github
-command! Dark :colorscheme molokai
+command! Light :colorscheme github | :AirlineTheme papercolor 
+command! Dark :colorscheme onedark | :AirlineTheme onedark
 
 """----------------------------------------------------------------------------- 
 """ Denite 
 """----------------------------------------------------------------------------- 
 call denite#custom#var('grep', 'command', ['pt'])
 call denite#custom#var('file_rec', 'command', 
-      \ ['pt', '--follow', '--nocolor', '--hidden', '--nogroup', '-g=', ''])
+      \ ['pt', '--follow', '--hidden', '--nocolor', '--nogroup', '-g=', ''])
 call denite#custom#var('grep', 'default_opts',
-      \ ['--nogroup', '--nocolor', '--smart-case'])
+      \ ['--nogroup', '--hidden', '--nocolor', '--smart-case'])
 call denite#custom#var('grep', 'recursive_opts', [])
 call denite#custom#var('grep', 'pattern_opt', [])
 call denite#custom#var('grep', 'separator', ['--'])
@@ -125,19 +141,20 @@ let g:deoplete#enable_at_startup=1
 let g:livedown_autorun=1
 if has("win32")
   let g:livedown_browser="chrome"
-endif
-if has("unix")
+elseif has("mac")
+  let g:livedown_browser="safari"
+elseif has("unix")
   let g:livedown_browser="firefox"
 endif
 
 
 """----------------------------------------------------------------------------- 
-""" Iron 
+""" Neomake 
 """----------------------------------------------------------------------------- 
-"let g:iron_map_defaults=0
-"augroup ironmapping
-"  autocmd!
-"  autocmd Filetype python nmap <buffer> <localleader>t <Plug>(iron-send-motion)
-"  autocmd Filetype python vmap <buffer> <localleader>t <Plug>(iron-send-motion)
-"  autocmd Filetype python nmap <buffer> <localleader>p <Plug>(iron-repeat-cmd)
-"augroup END
+" Call neomake when writing buffer
+call neomake#configure#automake('w')
+
+"""----------------------------------------------------------------------------- 
+""" Neoterm 
+"""----------------------------------------------------------------------------- 
+let g:neoterm_position='vertical'
