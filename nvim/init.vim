@@ -46,6 +46,10 @@ if dein#load_state('~/.config/nvim')
   call dein#add('hkupty/iron.nvim')
   call dein#add('Shougo/denite.nvim')
   call dein#add('vim-airline/vim-airline')
+  call dein#add('stephpy/vim-yaml')
+  call dein#add('dccmx/google-style.vim')
+  " call dein#add('tweekmonster/deoplete-clang2')
+  call dein#add('machakann/vim-highlightedyank')
   call dein#end()
   if dein#check_install()
     call dein#install()
@@ -64,6 +68,8 @@ set noswapfile
 set tabstop=2 shiftwidth=2 expandtab
 set number
 set numberwidth=2
+set relativenumber
+set inccommand=nosplit
 set clipboard+=unnamedplus
 set undofile
 set undodir="$HOME/.VIM_UNDO_FILES"
@@ -77,12 +83,14 @@ autocmd BufReadPost *
 """ Key mappings 
 """-----------------------------------------------------------------------------
 let mapleader = ','
-nnoremap <silent> <leader>o :Denite file_rec<CR>
-nnoremap <silent> <leader>b :Denite buffer<CR>
-nnoremap <silent> <leader>f :Denite grep<CR>
-nnoremap <silent> <leader>c :Denite command_history<CR>
+nnoremap <silent> <leader>o :Denite file_rec<cr>
+nnoremap <silent> <leader>b :Denite buffer<cr>
+nnoremap <silent> <leader>f :Denite grep<cr>
+nnoremap <silent> <leader>c :Denite command_history<cr>
+nnoremap <silent> <leader>r :Denite register<cr>
 tmap <esc> <c-\><c-n><esc><cr>
-
+nnoremap Y y$
+inoremap jk <esc>  
 
 """----------------------------------------------------------------------------- 
 """ Commands 
@@ -95,7 +103,7 @@ command! Dark :colorscheme molokai
 """----------------------------------------------------------------------------- 
 call denite#custom#var('grep', 'command', ['pt'])
 call denite#custom#var('file_rec', 'command', 
-      \ ['pt', '--follow', '--nocolor', '--nogroup', '-g=', ''])
+      \ ['pt', '--follow', '--nocolor', '--hidden', '--nogroup', '-g=', ''])
 call denite#custom#var('grep', 'default_opts',
       \ ['--nogroup', '--nocolor', '--smart-case'])
 call denite#custom#var('grep', 'recursive_opts', [])
