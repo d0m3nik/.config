@@ -26,7 +26,7 @@ Run `npm install -g livedown`
 ### Windows
 Download [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) binaries and place in PATH.
 
-Clone repo [dotfiles](https://github.com/d0m3nik/dotfiles) and place the directory nvim into
+Clone repo [.config](https://github.com/d0m3nik/.config) and place the directory nvim into
 $HOME/AppData/Local/nvim
 
 #### Setup python 
@@ -50,8 +50,30 @@ Run npm install -g livedown
 
 #### Setup denite grep
 Download [Pt](https://github.com/monochromegane/the_platinum_searcher/releases)
-Place pt.exe C:\Program Files\pt and add directory to PATH.
+Place pt in $HOME/bin and add directory to PATH.
 
+### Mac OS X
+Install [neovim](https://github.com/neovim/neovim/wiki/Installing-Neovim) with brew
 
+#### Setup python 
+```shell
+conda create -n neovim python=2.7
+source activate neovim
+pip install neovim jedi
+source deactivate
+conda create -n neovim3 python=3.6
+source activate neovim
+pip install neovim jedi
+source deactivate
+```
+Start neovim and run :CheckHealth
+
+#### Setup markdown preview
+Download [Node 8.9.1 LTS](https://nodejs.org/en) 
+Run npm install -g livedown
+
+#### Setup denite grep
+Download [Pt](https://github.com/monochromegane/the_platinum_searcher/releases)
+Place pt in $HOME/bin and add directory to PATH.
 
 
