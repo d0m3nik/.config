@@ -8,10 +8,10 @@ Follow install setps given for [neovim](https://github.com/neovim/neovim/wiki/In
 
 ```shell
 $ sudo apt-get install python3-venv
-$ virtualenv /home/dome/env/neovim3 --python=python3
+$ virtualenv /home/dome/envs/neovim3 --python=python3
 $ source /home/dome/envs/neovim3/bin/activate
 $ pip3 install neovim
-$ virtualenv /home/dome/env/neovim --python=python
+$ virtualenv /home/dome/envs/neovim --python=python
 $ source /home/dome/envs/neovim/bin/activate
 $ pip install neovim
 ```
