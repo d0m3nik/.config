@@ -55,6 +55,13 @@ if dein#load_state('~/.config/nvim')
   call dein#add('kassio/neoterm')
   call dein#add('dccmx/google-style.vim')
   call dein#add('machakann/vim-highlightedyank')
+  call dein#add('simeji/winresizer')
+  """ Javascript 
+  call dein#add('othree/yajs.vim')
+  call dein#add('carlitux/deoplete-ternjs') 
+  """ Typescript
+  call dein#add('mhartington/nvim-typescript')
+  call dein#add('HerringtonDarkholme/yats.vim')
   call dein#end()
   if dein#check_install()
     call dein#install()
@@ -98,15 +105,19 @@ nnoremap <silent> <leader>b :Denite buffer<cr>
 nnoremap <silent> <leader>f :Denite grep<cr>
 nnoremap <silent> <leader>c :Denite command_history<cr>
 tmap jk  <c-\><c-n><esc><cr>
+inoremap jk <esc>
 nnoremap <silent> <l :lnext<cr>
 nnoremap <silent> >l :lprevious<cr>
-inoremap jk <esc>
 nnoremap ö <C-]>
 nnoremap Ö <C-o>
 nnoremap Y y$
 nnoremap <silent> <f10> :TREPLSendFile<cr>
 nnoremap <silent> <f9> :TREPLSendLine<cr>
 vnoremap <silent> <f9> :TREPLSendSelection<cr>
+map <c-j> <c-w>j
+map <c-k> <c-w>k
+map <c-h> <c-w>h
+map <c-l> <c-w>l
 
 """----------------------------------------------------------------------------- 
 """ Commands 
